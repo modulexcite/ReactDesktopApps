@@ -1,4 +1,4 @@
-# React Chat Apps
+# React Desktop Apps
 
 A chat demo of building a React application to target multiple platforms using the **React Desktop Apps** template from the ServiceStackVS extension. In this demo we've ported the [Chat-React demo application](https://github.com/ServiceStackApps/Chat-React) to the React Desktop Apps template to take advantage of [CefSharp](https://github.com/cefsharp/CefSharp) to help you get the benefits of native applications whilst using great tools and frameworks from the web!
 
@@ -6,9 +6,10 @@ A chat demo of building a React application to target multiple platforms using t
 
 The React Desktop Apps template is setup ready to deploy to multiple target platforms, just by running a grunt task after creating our solution, we have 3 working applications from Visual Studio including:
 
-- **Web** - Ready to deploy.
-- **Console** - Single portable, cross platform executable that utilises the user's default browser.
-- **Windows** - Native Windows application using an embedded browser.
+- **Web** - ASP.NET Web Application with pre-configured Grunt IIS WebDeploy task
+- **Windows** - Native Windows application using an embedded CefSharp Chromium browser
+- **OSX** - Native OS X Cocoa App using an embedded WebView control
+- **Console** - Single portable, cross platform executable that utilises the user's default browser
 
 Additionally, an **OSX** project using Xamarin.Mac is generated preconfigured and ready to run! Web resources and services are shared between the Xamarin.Mac and Visual Studio solutions maximizing code reuse and having the ability to hook into native functionality in OSX using **Xamarin.Mac**.
 
@@ -19,16 +20,17 @@ Just like other templates in ServiceStackVS, the **React Desktop Apps** template
 
 ![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackvs/react-desktop-apps-proj-structure.png)
 
-- **ReactChat** - Web applicaton which contains all our resources and files used while developing.
-- **ReactChat.AppConsole*** - Console application, launches default browser on users application
-- **ReactChat.AppWinForms*** - WinForms application using CefSharp and Chromium Embedded Framework to output our web application in a native application.
-- **ReactChat.Resources*** - Embedded resources that are used by our AppWinForms and AppConsole application and target of `01-bundle-all` Grunt task. This project has references to all minified client resources (CSS, JavaScript, images, etc) and includes each of them as an *Embedded Resource*.
-- **ReactChat.ServiceInterface** - Contains ServiceStack services.
-- **ReactChat.ServiceModel** - Contains request/response classes.
-- **ReactChat.Tests** - Contains NUnit tests. 
+- **DefaultApp** - Web applicaton which contains all our resources and files used while developing.
+- **DefaultApp.AppConsole*** - Console application, launches default browser on users application
+- **DefaultApp.AppWinForms*** - WinForms application using CefSharp and Chromium Embedded Framework to output our web application in a native application.
+- **DefaultApp.Resources*** - Embedded resources that are used by our AppWinForms and AppConsole application and target of `01-bundle-all` Grunt task. This project has references to all minified client resources (CSS, JavaScript, images, etc) and includes each of them as an *Embedded Resource*.
+- **DefaultApp.ServiceInterface** - Contains ServiceStack services.
+- **DefaultApp.ServiceModel** - Contains request/response classes.
+- **DefaultApp.Tests** - Contains NUnit tests. 
 
 
-#### ReactChat Project
+### DefaultApp Project
+
 This project contains all our development resources, JS/JSX, CSS, images, Razor views, etc. This project also has all the required Grunt/Gulp tasks used for deploying the 3 application outputs. Taking advantage of Visual Studio 2015's Task Runner Explorer, we can look at the `Alias` tasks to get an idea of how we can build and deploy our console, winforms and web application.
 
 ![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/gap/react-desktop-tasks.png)
@@ -71,10 +73,10 @@ The minimum steps to deploy an app is to fill in `config.json` with the remote I
 }
 ```
 
-#### ReactChat.AppConsole
+#### DefaultApp.AppConsole
 This project is for producing a SelfHost ServiceStack application that utilizes the user's default browser. Combined with the Grunt/Gulp and ILMerge, we can produce a cross-platform, single executable that has embedded resources used by our application.
 
-This project uses the bundled resources from the web application that are bundled using the Grunt/Gulp tasks. These resources are embedded in the `ReactChat.Resources` and the AppHost needs to be configured to look for these embedded resources. For the compiled Razor views, we use the following configuration for our `RazorFormat` plugin.
+This project uses the bundled resources from the web application that are bundled using the Grunt/Gulp tasks. These resources are embedded in the `DefaultApp.Resources` and the AppHost needs to be configured to look for these embedded resources. For the compiled Razor views, we use the following configuration for our `RazorFormat` plugin.
 
 ``` csharp
 Plugins.Add(new RazorFormat
@@ -83,9 +85,9 @@ Plugins.Add(new RazorFormat
 });
 ```
 
-`CefResources` is a class in the `ReactChat.Resources` project so we can easily refer to it's assembly with `typeof(CefResources).Assembly`. 
+`CefResources` is a class in the `DefaultApp.Resources` project so we can easily refer to it's assembly with `typeof(CefResources).Assembly`. 
 
-For our other resources, we need to set the `EmbeddedResourceBaseTypes` to both our current project and the `ReactChat.Resources` using the `CefResources` type.
+For our other resources, we need to set the `EmbeddedResourceBaseTypes` to both our current project and the `DefaultApp.Resources` using the `CefResources` type.
 
 ```
 SetConfig(new HostConfig
@@ -96,8 +98,8 @@ SetConfig(new HostConfig
 
 >We need to specify base types instead of assemblies so their namespaces are preserved once they're ILMerged into a single .exe
 
-#### ReactChat.AppWinForms
-This project utilizes the CefSharp project for embedding a high performing Chromium browser in a WinForms application. This project, also uses the bundled resources from the web application via the `ReactChat.Resources` project as well being a `AppSelfHostBase` based application, we need to set the same config as our `ReactChat.AppConsole` application in the AppHost.
+#### DefaultApp.AppWinForms
+This project utilizes the CefSharp project for embedding a high performing Chromium browser in a WinForms application. This project, also uses the bundled resources from the web application via the `DefaultApp.Resources` project as well being a `AppSelfHostBase` based application, we need to set the same config as our `DefaultApp.AppConsole` application in the AppHost.
 
 ``` csharp
 Plugins.Add(new RazorFormat
@@ -146,7 +148,7 @@ public FormMain()
 }
 ```
 
-CefSharp also enabled integration between JavaScript and native calls via exposing JavaScript objects that are registered .NET classes. In ReactChat and the ServiceStackVS template, we wire up 2 objects to show how this can be leveraged. One to simply show a message box when "About" is clicked and the other to close the application. The .NET classes are POCOs that have matching function names with the JavaScript object registered. The default setting is to camel case the JS object following the common naming conventions when using JS.
+CefSharp also enabled integration between JavaScript and native calls via exposing JavaScript objects that are registered .NET classes. In DefaultApp and the ServiceStackVS template, we wire up 2 objects to show how this can be leveraged. One to simply show a message box when "About" is clicked and the other to close the application. The .NET classes are POCOs that have matching function names with the JavaScript object registered. The default setting is to camel case the JS object following the common naming conventions when using JS.
 
 ```csharp
 public class NativeHost
@@ -169,7 +171,7 @@ public class NativeHost
 
     public void ShowAbout()
     {
-        MessageBox.Show(@"ServiceStack with CefSharp + ReactJS", @"ReactChat.AppWinForms", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show(@"ServiceStack with CefSharp + ReactJS", @"DefaultApp.AppWinForms", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     public void ToggleFormBorder()
@@ -218,7 +220,7 @@ window.nativeHost = {
 
 If CefSharp is being used, these objects are registered before page is rendered and the native hooks will be used instead.
 
-#### ReactChat.Resources
+#### DefaultApp.Resources
 This project has references to the output files from the `01-bundle-all` Grunt task. If any additional images or minified JS/CSS files are added to your project, they must be referenced by this project to be included as an embedded resource for use in both AppConsole and AppWinForms projects. The structure of the project follows what is deployed in the `wwwroot` project.
 
 ```
@@ -245,7 +247,7 @@ All files have a `Build Action` of `Embedded Resource` so they are ready to be u
 ![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackvs/react-desktop-apps-embedded-resource.png)
 
 # Grunt Tasks
-Grunt and Gulp are used in the ReactChat project to automate our bundling, packaging and deployment of the applications. These tasks are declared as small, single responsibility Grunt tasks and then orchastrated using Alias tasks to be able to run these simply either from Visual Studio using the Task Runner Explorer or from the command line.
+Grunt and Gulp are used in the DefaultApp project to automate our bundling, packaging and deployment of the applications. These tasks are declared as small, single responsibility Grunt tasks and then orchastrated using Alias tasks to be able to run these simply either from Visual Studio using the Task Runner Explorer or from the command line.
 
 #### 01-bundle-all
 Just like the AngularJS and React App template, we stage our application ready for release and avoid any build steps at development time to improve the simplicity and speed of the development workflow. This alias task is made up of small, simple tasks that use Gulp to process resources and perform tasks like minification, JSX transformation, copying/deleting of resources, etc.
@@ -293,13 +295,13 @@ RMDIR /S /Q .\staging-console
 MD staging-console
 
 SET TOOLS=.\tools
-SET OUTPUTNAME=ReactChat.Console.exe
+SET OUTPUTNAME=DefaultApp.Console.exe
 SET ILMERGE=%TOOLS%\ILMerge.exe
-SET RELEASE=..\..\ReactChat.AppConsole\bin\x86\Release
-SET INPUT=%RELEASE%\ReactChat.AppConsole.exe
-SET INPUT=%INPUT% %RELEASE%\ReactChat.Resources.dll
-SET INPUT=%INPUT% %RELEASE%\ReactChat.ServiceInterface.dll
-SET INPUT=%INPUT% %RELEASE%\ReactChat.ServiceModel.dll
+SET RELEASE=..\..\DefaultApp.AppConsole\bin\x86\Release
+SET INPUT=%RELEASE%\DefaultApp.AppConsole.exe
+SET INPUT=%INPUT% %RELEASE%\DefaultApp.Resources.dll
+SET INPUT=%INPUT% %RELEASE%\DefaultApp.ServiceInterface.dll
+SET INPUT=%INPUT% %RELEASE%\DefaultApp.ServiceModel.dll
 SET INPUT=%INPUT% %RELEASE%\ServiceStack.dll
 SET INPUT=%INPUT% %RELEASE%\ServiceStack.Text.dll
 SET INPUT=%INPUT% %RELEASE%\ServiceStack.Client.dll
@@ -317,11 +319,11 @@ IF NOT EXIST apps (
 MD apps
 )
 
-COPY /Y .\staging-console\%OUTPUTNAME% .\apps\ReactChat-console.exe
+COPY /Y .\staging-console\%OUTPUTNAME% .\apps\DefaultApp-console.exe
 ```
 
 #### 03-package-winforms
-This task also performs `01-build-all` as well restoring NuGet packages and building the **AppWinForms** project. Once the project resources are ready, it calls `package-deploy-winforms.bat` which uses 7zip SFX to zip and compresses the CefSharp.WinForms ReactChat.AppWinForms application in a self executing zip package.
+This task also performs `01-build-all` as well restoring NuGet packages and building the **AppWinForms** project. Once the project resources are ready, it calls `package-deploy-winforms.bat` which uses 7zip SFX to zip and compresses the CefSharp.WinForms DefaultApp.AppWinForms application in a self executing zip package.
 
 ``` batch
 IF EXIST staging-winforms\ (
@@ -331,9 +333,9 @@ RMDIR /S /Q .\staging-winforms
 MKDIR staging-winforms
 
 SET TOOLS=.\tools
-SET RELEASE=..\..\ReactChat.AppWinForms\bin\x86\Release
-COPY %RELEASE%\ReactChat.AppWinForms.exe .\staging-winforms
-COPY %RELEASE%\ReactChat.AppWinForms.exe.config .\staging-winforms
+SET RELEASE=..\..\DefaultApp.AppWinForms\bin\x86\Release
+COPY %RELEASE%\DefaultApp.AppWinForms.exe .\staging-winforms
+COPY %RELEASE%\DefaultApp.AppWinForms.exe.config .\staging-winforms
 COPY %RELEASE%\CefSharp.BrowserSubprocess.exe .\staging-winforms
 ROBOCOPY "%RELEASE%" ".\staging-winforms" *.dll *.pak *.dat /E
 
@@ -341,23 +343,23 @@ IF NOT EXIST apps (
 mkdir apps
 )
 
-IF EXIST ReactChat-winforms.7z (
-del ReactChat-winforms.7z
+IF EXIST DefaultApp-winforms.7z (
+del DefaultApp-winforms.7z
 )
 
-IF EXIST ReactChat-winforms.exe (
-del ReactChat-winforms.exe
+IF EXIST DefaultApp-winforms.exe (
+del DefaultApp-winforms.exe
 )
 
-cd tools && 7za a ..\ReactChat-winforms.7z ..\staging-winforms\* && cd..
-copy /b .\tools\7zsd_All.sfx + config-winforms.txt + ReactChat-winforms.7z .\apps\ReactChat-winforms.exe
+cd tools && 7za a ..\DefaultApp-winforms.7z ..\staging-winforms\* && cd..
+copy /b .\tools\7zsd_All.sfx + config-winforms.txt + DefaultApp-winforms.7z .\apps\DefaultApp-winforms.exe
 ```
 
 If additional files not included in the `ROBOCOPY`/`COPY` commands below are needed in the application, they need to be included in the `ROBOCOPY` command in `package-deploy-winforms.bat`. By default, all the files required for the Chromium Embedded Framework are included in the template script.
 
 ```
-COPY %RELEASE%\ReactChat.AppWinForms.exe .\staging-winforms
-COPY %RELEASE%\ReactChat.AppWinForms.exe.config .\staging-winforms
+COPY %RELEASE%\DefaultApp.AppWinForms.exe .\staging-winforms
+COPY %RELEASE%\DefaultApp.AppWinForms.exe.config .\staging-winforms
 ROBOCOPY "%RELEASE%" ".\staging-winforms" *.dll *.pak *.dat /E
 ```
 
@@ -365,13 +367,13 @@ Once all the required files in are staged in the `staging-winforms`, this direct
 
 ``` txt
 ;!@Install@!UTF-8!
-ExecuteFile="ReactChat.AppWinForms.exe"
+ExecuteFile="DefaultApp.AppWinForms.exe"
 GUIMode="2"
 ;!@InstallEnd@!
 ```
 Configuration options for 7z SFX can be found in the [7z SFX documentation](http://7zsfx.info/en/configinfo.html).
 
-The ReactChatApp solution is using a modified version of the 7zsd_All.sfx file which generates the self executable with the custom ServiceStack `.ico` file. More information on how to change this to a custom icon can be found on the [7zsfx.info](http://7zsfx.info/en/icon.html) site.
+The DefaultAppApp solution is using a modified version of the 7zsd_All.sfx file which generates the self executable with the custom ServiceStack `.ico` file. More information on how to change this to a custom icon can be found on the [7zsfx.info](http://7zsfx.info/en/icon.html) site.
 
 #### 04-deploy-webapp
 
