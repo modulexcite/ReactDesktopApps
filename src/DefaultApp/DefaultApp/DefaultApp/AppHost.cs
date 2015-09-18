@@ -9,7 +9,6 @@ using Funq;
 using DefaultApp.ServiceInterface;
 using ServiceStack;
 using ServiceStack.Configuration;
-using ServiceStack.Razor;
 
 namespace DefaultApp
 {
@@ -46,8 +45,6 @@ namespace DefaultApp
                 AllowFileExtensions = { "jsx" },
                 AddRedirectParamsToQueryString = true
             });
-
-            this.Plugins.Add(new RazorFormat());
         }
     }
 }

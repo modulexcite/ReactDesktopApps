@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Funq;
 using ServiceStack;
-using ServiceStack.Razor;
 using DefaultApp.Resources;
 using DefaultApp.ServiceInterface;
 
@@ -31,11 +30,6 @@ namespace DefaultApp.AppWinForms
             //Config examples
             //this.Plugins.Add(new PostmanFeature());
             //Plugins.Add(new CorsFeature());
-
-            Plugins.Add(new RazorFormat
-            {
-                LoadFromAssemblies = { typeof(CefResources).Assembly },
-            });
 
             SetConfig(new HostConfig
             {

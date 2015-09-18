@@ -7,14 +7,14 @@ var COPY_FILES = [
     { src: './App_Data/**/*', dest: 'App_Data/', host: WEB },
     { src: './Global.asax', host: WEB },
     { src: './bower_components/bootstrap/dist/fonts/*.*', dest: 'lib/fonts/' },
-    { src: './js/web.js', dest: 'js/', host: WEB },
+    { src: './platform.js', dest: 'js/', host: WEB },
     { src: './wwwroot_build/deploy/*.*', host: WEB },
     {
         src: './web.config',
         host: [WEB],
         afterReplace: [{
-            from: '<compilation debug="true" targetFramework="4.5">',
-            to: '<compilation targetFramework="4.5">'
+            from: '<compilation debug="true" targetFramework="4.5"',
+            to: '<compilation targetFramework="4.5"'
         }]
     }
 ];
@@ -23,6 +23,7 @@ var COPY_FILES = [
 module.exports = function (grunt) {
     "use strict";
 
+    var fs = require('fs');
     var path = require('path');
     // include gulp
     var gulp = require('gulp');
@@ -40,8 +41,37 @@ module.exports = function (grunt) {
     var webRoot = 'wwwroot/';
     var resourcesLib = '../../lib/';
 
+    var configFile = 'config.json';
+    var configDir = './wwwroot_build/publish/';
+    var configPath = configDir + configFile;
+    var appSettingsFile = 'appsettings.txt';
+    var appSettingsDir = './wwwroot_build/deploy/';
+    var appSettingsPath = appSettingsDir + appSettingsFile;
+
+    function createConfigsIfMissing() {
+        if (!fs.existsSync(configPath)) {
+            if (!fs.existsSync(configDir)) {
+                fs.mkdirSync(configDir);
+            }
+            fs.writeFileSync(configPath, JSON.stringify({
+                "iisApp": "DefaultApp",
+                "serverAddress": "deploy-server.example.com",
+                "userName": "{WebDeployUserName}",
+                "password": "{WebDeployPassword}"
+            }, null, 4));
+        }
+        if (!fs.existsSync(appSettingsPath)) {
+            if (!fs.existsSync(appSettingsDir)) {
+                fs.mkdirSync(appSettingsDir);
+            }
+            fs.writeFileSync(appSettingsPath,
+                '# Release App Settings\n\nDebugMode false');
+        }
+    }
+
     // Deployment config
-    var config = require('./wwwroot_build/publish/config.json');
+    createConfigsIfMissing();
+    var config = require(configPath);
 
     // Project configuration.
     grunt.initConfig({
@@ -234,14 +264,14 @@ module.exports = function (grunt) {
                 var checkIfJsx = function (file) {
                     return file.relative.indexOf('.jsx.js') !== -1;
                 };
-                return gulp.src('./**/*.cshtml')
+                return gulp.src(['./**/*.html', '!wwwroot_build/**/*', '!wwwroot/**/*', '!bower_components/**/*', '!node_modules/**/*'])
                     .pipe(assets)
                     .pipe(gulpif('*.jsx.js', react()))
                     .pipe(gulpif(checkIfJsx, uglify()))
                     .pipe(gulpif('*.css', minifyCss()))
                     .pipe(assets.restore())
                     .pipe(useref())
-                    .pipe(gulpif('*.cshtml', header("@* Auto generated file on " + (new Date().toLocaleTimeString()) + " by DefaultApp\\gruntfile.js *@\r\n")))
+                    .pipe(gulpif('*.html', header("<!-- Auto generated file on " + (new Date().toLocaleTimeString()) + " by DefaultApp\\gruntfile.js -->\r\n")))
                     .pipe(gulp.dest(resourcesRoot))
                     .pipe(gulp.dest(webRoot));
 
