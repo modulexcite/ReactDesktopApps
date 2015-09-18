@@ -15,9 +15,9 @@ var HelloWorld = React.createClass({
 		return (
 			<div>
 				<input type="text" className="form-control" placeholder="Your name"
-                       onChange={this.handleNameChange} />
+					   onChange={this.handleNameChange} />
 				<h3>{this.state.greeting}</h3>
 			</div>
 		);
-}
+	}
 });
