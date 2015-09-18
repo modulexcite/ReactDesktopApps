@@ -1,33 +1,74 @@
 # React Desktop Apps
 
-A chat demo of building a React application to target multiple platforms using the **React Desktop Apps** template from the ServiceStackVS extension. In this demo we've ported the [Chat-React demo application](https://github.com/ServiceStackApps/Chat-React) to the React Desktop Apps template to take advantage of [CefSharp](https://github.com/cefsharp/CefSharp) to help you get the benefits of native applications whilst using great tools and frameworks from the web!
+React Desktop Apps lets you take advantage the adaptiveness, navigation and deep-linking benefits of a 
+Web-based UI, the productivity and responsiveness of the 
+[React framework](https://facebook.github.io/react/),
+the performance, depth of features and functionality in 
+[ServiceStack Libraries](https://servicestack.net/download) and .NET Framework combined with the rich 
+native experience and OS Integration possible from a Native Desktop App - all in a single VS .NET template.
+
+The new **React Desktop Apps** template in 
+[ServiceStackVS](https://visualstudiogallery.msdn.microsoft.com/5bd40817-0986-444d-a77d-482e43a48da7) 
+provides everything you need to package your ASP.NET ServiceStack Web App into a native Windows Winforms App, 
+OSX Cocoa Desktop App or cross-platform (Windows/OSX/Linux) "headless" Console App which instead of being 
+embedded inside a Native UI, launches the Users prefered Web Browser for its Web UI.
+
+This Hybrid model of developing Desktop Apps with modern WebKit technologies offers a more productive and 
+reusable alternative to developing bespoke WPF Apps in XAML or Cocoa OSX Apps with Xcode. 
+It enables full code reuse of the Web App whilst still allowing for platform specific .js, .css and 
+C# specialization when needed. These advantages are also why GitHub also adopted a similar approach for 
+their new cross-platform UI in their flagship 
+[Windows and OSX Desktop Apps](http://githubengineering.com/cross-platform-ui-in-github-desktop/).
 
 ![React Desktop Apps](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/gap/react-desktop-splash.png)
 
-The React Desktop Apps template is setup ready to deploy to multiple target platforms, just by running a grunt task after creating our solution, we have 3 working applications from Visual Studio including:
+### Single Installer-less Executable
 
-- **Web** - ASP.NET Web Application with pre-configured Grunt IIS WebDeploy task
-- **Windows** - Native Windows application using an embedded CefSharp Chromium browser
-- **OSX** - Native OS X Cocoa App using an embedded WebView control
-- **Console** - Single portable, cross platform executable that utilises the user's default browser
+Each application is compiled into a single executable that's xcopy-able and runnable directly without a 
+Software install. The only pre-requisite is the .NET 4.5 Framework on Windows
+(pre-installed on recent versions of Windows) or 
+[Mono on Linux](http://www.mono-project.com/docs/getting-started/install/linux/). 
+The OSX Cocoa Xamarin.Mac App has the option to bundle the Mono runtime alleviating the need for users to
+have an existing install of Mono.
 
-Additionally, an **OSX** project using Xamarin.Mac is generated preconfigured and ready to run! Web resources and services are shared between the Xamarin.Mac and Visual Studio solutions maximizing code reuse and having the ability to hook into native functionality in OSX using **Xamarin.Mac**.
+### React Desktop App VS.NET Template
 
-![WinForms application with loading splash screen](https://github.com/ServiceStack/Assets/raw/master/img/livedemos/react-desktop-apps/react-desktop-apps-winforms.gif)
+The **React Desktop Apps** template is pre-configured with the necessary tools to package your Web Application 
+into multiple platforms using the provided Grunt build tasks. The Desktop Apps are also debuggable
+allowing for a simplified and iterative dev workflow by running the preferred Host Project:
 
-# Project Structure
-Just like other templates in ServiceStackVS, the **React Desktop Apps** template provides the same recommended structure as well as 3 additional other projects for producing the Console and WinForms applications.
+- **Web** - ASP.NET Web Application
+- **Windows** - Native Windows application embedded in a CefSharp Chromium browser
+- **OSX** - Native OS X Cocoa App embedded in a WebView control (requires Xamarin.Mac)
+- **Console** - Single portable, cross platform executable that launches the user's prefered browser
 
-![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackvs/react-desktop-apps-proj-structure.png)
+## Project Structure
+
+The resulting project structure is the same as the 
+[React App](https://github.com/ServiceStackApps/Chat-React#modern-reactjs-apps-with-net) VS.NET Template, 
+but with 3 additional projects for hosting the new Desktop and Console Apps and a Common **Resources** project
+shared by all Host projects containing all the ASP.NET resources (e.g. .css, .js, images, etc) as embedded
+resources. It's kept in-sync with the primary **DefaultApp** project with the `01-bundle-all` or `default` 
+Grunt tasks.
+
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/react-desktop-apps/combined-project-structure.png)
+
+### DefaultApp.sln 
 
 - **DefaultApp** - Web applicaton which contains all our resources and files used while developing.
-- **DefaultApp.AppConsole*** - Console application, launches default browser on users application
-- **DefaultApp.AppWinForms*** - WinForms application using CefSharp and Chromium Embedded Framework to output our web application in a native application.
-- **DefaultApp.Resources*** - Embedded resources that are used by our AppWinForms and AppConsole application and target of `01-bundle-all` Grunt task. This project has references to all minified client resources (CSS, JavaScript, images, etc) and includes each of them as an *Embedded Resource*.
-- **DefaultApp.ServiceInterface** - Contains ServiceStack services.
-- **DefaultApp.ServiceModel** - Contains request/response classes.
-- **DefaultApp.Tests** - Contains NUnit tests. 
+- **DefaultApp.AppConsole** - Console Host Project
+- **DefaultApp.AppWinForms** - WinForms Host Project
+- **DefaultApp.Resources** - Shared Embedded resources sourced from **DefaultApp** 
+- **DefaultApp.ServiceInterface** - ServiceStack Service Implementations
+- **DefaultApp.ServiceModel** - Request and Response DTO's
+- **DefaultApp.Tests** - NUnit tests
 
+### DefaultAppMac.sln    
+
+ - **DefaultApp.AppMac** - Cocoa OSX Host project
+
+This is a Xamarin Studio project which can be built with Xamarin.Mac and uses the compiled embedded resources
+`lib\DefaultApp.Resources.dll` created by the Grunt task.
 
 ### DefaultApp Project
 
@@ -79,8 +120,7 @@ This project is for producing a SelfHost ServiceStack application that utilizes 
 This project uses the bundled resources from the web application that are bundled using the Grunt/Gulp tasks. These resources are embedded in the `DefaultApp.Resources` and the AppHost needs to be configured to look for these embedded resources. For the compiled Razor views, we use the following configuration for our `RazorFormat` plugin.
 
 ``` csharp
-Plugins.Add(new RazorFormat
-{
+Plugins.Add(new RazorFormat {
     LoadFromAssemblies = { typeof(CefResources).Assembly }
 });
 ```
@@ -90,8 +130,7 @@ Plugins.Add(new RazorFormat
 For our other resources, we need to set the `EmbeddedResourceBaseTypes` to both our current project and the `DefaultApp.Resources` using the `CefResources` type.
 
 ```
-SetConfig(new HostConfig
-{
+SetConfig(new HostConfig {
     EmbeddedResourceBaseTypes = { typeof(AppHost), typeof(CefResources) }
 });
 ```
@@ -101,14 +140,12 @@ SetConfig(new HostConfig
 #### DefaultApp.AppWinForms
 This project utilizes the CefSharp project for embedding a high performing Chromium browser in a WinForms application. This project, also uses the bundled resources from the web application via the `DefaultApp.Resources` project as well being a `AppSelfHostBase` based application, we need to set the same config as our `DefaultApp.AppConsole` application in the AppHost.
 
-``` csharp
-Plugins.Add(new RazorFormat
-{
+```csharp
+Plugins.Add(new RazorFormat {
     LoadFromAssemblies = { typeof(CefResources).Assembly }
 });
 
-SetConfig(new HostConfig
-{
+SetConfig(new HostConfig {
     EmbeddedResourceBaseTypes = { typeof(AppHost), typeof(CefResources) }
 });
 ```
@@ -190,20 +227,20 @@ public class NativeHost
 ```
 
 The `NativeHost` class is exposed by CefSharp as a JavaScript object with functions and properties. The `NativeHost` object is common on all platforms, but the implementation is different to get access to native functionality. CefSharp provides the `nativeHost` JavaScript object, but for other platforms, we need to provide the `nativeHost` JavaScript object via Razor. We use Razor to inject a `PlatformCss` and `PlatformJs` so we can introduce native hooks and presentation into native applications and hide them from our web app.
-``` html
-    @if (AppSettings.Exists("PlatformCss"))
-    {
-        <link rel="stylesheet" href="@(AppSettings.GetString("PlatformCss") + "?disableCache=" + DateTime.UtcNow.Ticks)"/>
-    }
-    @if (AppSettings.Exists("PlatformJs"))
-    {
-        <script src="@(AppSettings.GetString("PlatformJs") + "?disableCache=" + DateTime.UtcNow.Ticks)"></script>
-    }
+```html
+@if (AppSettings.Exists("PlatformCss"))
+{
+    <link rel="stylesheet" href="@(AppSettings.GetString("PlatformCss") + "?disableCache=" + DateTime.UtcNow.Ticks)"/>
+}
+@if (AppSettings.Exists("PlatformJs"))
+{
+    <script src="@(AppSettings.GetString("PlatformJs") + "?disableCache=" + DateTime.UtcNow.Ticks)"></script>
+}
 ``` 
 
 For example, for the OSX platform, we include a `mac.js` embedded resource that provides the same interfaces, but we use a ServiceStack service to fire functions on the native platform.
 
-``` javascript
+```javascript
 window.nativeHost = {
     quit: function () {
         $.get('/nativehost/quit');
@@ -246,7 +283,7 @@ All files have a `Build Action` of `Embedded Resource` so they are ready to be u
 
 ![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackvs/react-desktop-apps-embedded-resource.png)
 
-# Grunt Tasks
+## Grunt Tasks
 Grunt and Gulp are used in the DefaultApp project to automate our bundling, packaging and deployment of the applications. These tasks are declared as small, single responsibility Grunt tasks and then orchastrated using Alias tasks to be able to run these simply either from Visual Studio using the Task Runner Explorer or from the command line.
 
 #### 01-bundle-all
@@ -267,18 +304,12 @@ The bundling searches for assets in any `*.cshtml` file and follows build commen
 
 <!-- build:js js/app.jsx.js -->
 <script type="text/javascript" src="js/components/Actions.js"></script>
-<script type="text/jsx" src="js/components/User.jsx">
-</script>
-<script type="text/jsx" src="js/components/Header.jsx">
-</script>
-<script type="text/jsx" src="js/components/Sidebar.jsx">
-</script>
-<script type="text/jsx" src="js/components/ChatLog.jsx">
-</script>
-<script type="text/jsx" src="js/components/Footer.jsx">
-</script>
-<script type="text/jsx" src="js/components/ChatApp.jsx">
-</script>
+<script type="text/jsx" src="js/components/User.jsx"></script>
+<script type="text/jsx" src="js/components/Header.jsx"></script>
+<script type="text/jsx" src="js/components/Sidebar.jsx"></script>
+<script type="text/jsx" src="js/components/ChatLog.jsx"></script>
+<script type="text/jsx" src="js/components/Footer.jsx"></script>
+<script type="text/jsx" src="js/components/ChatApp.jsx"></script>
 <!-- endbuild -->
 ```
 
@@ -287,7 +318,7 @@ When creating new JS files for your application, they should be added in the `bu
 #### 02-package-console
 This task also performs `01-build-all` as well restoring NuGet packages and building the **AppConsole** project. Once the project resources are ready, it calls the `package-deploy-console.bat` batch file which, using **ILMerge**, produces the stand alone exe of the console application and copies it to `apps` output directory.
 
-``` bat
+```bat
 IF EXIST staging-console (
 RMDIR /S /Q .\staging-console
 )
@@ -325,7 +356,7 @@ COPY /Y .\staging-console\%OUTPUTNAME% .\apps\DefaultApp-console.exe
 #### 03-package-winforms
 This task also performs `01-build-all` as well restoring NuGet packages and building the **AppWinForms** project. Once the project resources are ready, it calls `package-deploy-winforms.bat` which uses 7zip SFX to zip and compresses the CefSharp.WinForms DefaultApp.AppWinForms application in a self executing zip package.
 
-``` batch
+```bat
 IF EXIST staging-winforms\ (
 RMDIR /S /Q .\staging-winforms
 )
@@ -357,7 +388,7 @@ copy /b .\tools\7zsd_All.sfx + config-winforms.txt + DefaultApp-winforms.7z .\ap
 
 If additional files not included in the `ROBOCOPY`/`COPY` commands below are needed in the application, they need to be included in the `ROBOCOPY` command in `package-deploy-winforms.bat`. By default, all the files required for the Chromium Embedded Framework are included in the template script.
 
-```
+```batch
 COPY %RELEASE%\DefaultApp.AppWinForms.exe .\staging-winforms
 COPY %RELEASE%\DefaultApp.AppWinForms.exe.config .\staging-winforms
 ROBOCOPY "%RELEASE%" ".\staging-winforms" *.dll *.pak *.dat /E
