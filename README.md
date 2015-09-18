@@ -7,6 +7,8 @@ the performance, depth of features and functionality in
 [ServiceStack Libraries](https://servicestack.net/download) and .NET Framework combined with the rich 
 native experience and OS Integration possible from a Native Desktop App - all in a single VS .NET template.
 
+![React Desktop Apps](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/gap/react-desktop-splash.png)
+
 The new **React Desktop Apps** template in 
 [ServiceStackVS](https://visualstudiogallery.msdn.microsoft.com/5bd40817-0986-444d-a77d-482e43a48da7) 
 provides everything you need to package your ASP.NET ServiceStack Web App into a native Windows Winforms App, 
@@ -19,8 +21,6 @@ It enables full code reuse of the Web App whilst still allowing for platform spe
 C# specialization when needed. These advantages are also why GitHub also adopted a similar approach for 
 their new cross-platform UI in their flagship 
 [Windows and OSX Desktop Apps](http://githubengineering.com/cross-platform-ui-in-github-desktop/).
-
-![React Desktop Apps](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/gap/react-desktop-splash.png)
 
 ### Single Installer-less Executable
 
