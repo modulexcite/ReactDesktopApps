@@ -121,17 +121,17 @@ This project uses the bundled resources from the web application that are bundle
 
 ``` csharp
 Plugins.Add(new RazorFormat {
-    LoadFromAssemblies = { typeof(SharedEmbeddedResources).Assembly }
+    LoadFromAssemblies = { typeof(CefResources).Assembly }
 });
 ```
 
-`SharedEmbeddedResources` is a class in the `DefaultApp.Resources` project so we can easily refer to it's assembly with `typeof(SharedEmbeddedResources).Assembly`. 
+`CefResources` is a class in the `DefaultApp.Resources` project so we can easily refer to it's assembly with `typeof(CefResources).Assembly`. 
 
-For our other resources, we need to set the `EmbeddedResourceBaseTypes` to both our current project and the `DefaultApp.Resources` using the `SharedEmbeddedResources` type.
+For our other resources, we need to set the `EmbeddedResourceBaseTypes` to both our current project and the `DefaultApp.Resources` using the `CefResources` type.
 
 ```
 SetConfig(new HostConfig {
-    EmbeddedResourceBaseTypes = { typeof(AppHost), typeof(SharedEmbeddedResources) }
+    EmbeddedResourceBaseTypes = { typeof(AppHost), typeof(CefResources) }
 });
 ```
 
@@ -142,11 +142,11 @@ This project utilizes the CefSharp project for embedding a high performing Chrom
 
 ```csharp
 Plugins.Add(new RazorFormat {
-    LoadFromAssemblies = { typeof(SharedEmbeddedResources).Assembly }
+    LoadFromAssemblies = { typeof(CefResources).Assembly }
 });
 
 SetConfig(new HostConfig {
-    EmbeddedResourceBaseTypes = { typeof(AppHost), typeof(SharedEmbeddedResources) }
+    EmbeddedResourceBaseTypes = { typeof(AppHost), typeof(CefResources) }
 });
 ```
 
