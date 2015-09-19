@@ -7,15 +7,6 @@ window.nativeHost = {
     showAbout: function() {
         alert('RedisReact - ServiceStack + ReactJS');
     },
-    toggleFormBorder: function() {
-        //
-    },
-    dockLeft: function() {
-        //
-    },
-    dockRight: function() {
-        //
-    },
     ready: function() {
         //
     },
