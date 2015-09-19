@@ -8,7 +8,7 @@ namespace DefaultApp.AppMac
 {
 	public partial class AppDelegate : NSApplicationDelegate
 	{
-		MainWindowController mainWindowController;
+		public static MainWindowController MainWindowController;
 
 		public AppDelegate(){}
 
@@ -20,8 +20,8 @@ namespace DefaultApp.AppMac
 			defaults.SetBool (true, "WebKitDeveloperExtras");
 			defaults.Synchronize();
 #endif
-			mainWindowController = new MainWindowController ();
-			mainWindowController.Window.MakeKeyAndOrderFront (this);
+			MainWindowController = new MainWindowController ();
+			MainWindowController.Window.MakeKeyAndOrderFront (this);
 		}
 	}
 }
