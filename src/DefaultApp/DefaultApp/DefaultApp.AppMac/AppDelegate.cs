@@ -17,11 +17,11 @@ namespace DefaultApp.AppMac
 #if DEBUG
 			//Enable WebInspector in WebView
 			var defaults = NSUserDefaults.StandardUserDefaults;
-			defaults.SetBool (true, "WebKitDeveloperExtras");
+			defaults.SetBool(true, "WebKitDeveloperExtras");
 			defaults.Synchronize();
 #endif
-			MainWindowController = new MainWindowController ();
-			MainWindowController.Window.MakeKeyAndOrderFront (this);
+			MainWindowController = new MainWindowController();
+			MainWindowController.Window.MakeKeyAndOrderFront(this);
 		}
 	}
 }

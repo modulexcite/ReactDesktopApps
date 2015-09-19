@@ -7,7 +7,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <PlatformTarget>x86</PlatformTarget>
-    <ProjectGuid>{79124D15-0281-4E59-9E4C-661DDBD31EC3}</ProjectGuid>
+    <ProjectGuid>{7725D5F9-3E4A-4C54-8376-7727F34B62C6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DefaultApp.AppWinForms</RootNamespace>

@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace DefaultApp.Resources
 {
-    public class CefResources
-    {
-    }
+    public class SharedEmbeddedResources { }
 }
