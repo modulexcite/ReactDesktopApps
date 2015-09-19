@@ -336,7 +336,7 @@ by telling ServiceStack to also register Services contained in the host project 
 public class AppHost : AppSelfHostBase
 {
     public AppHost()
-        : base("DefaultApp Console", typeof(MyServices).Assembly, typeof(AppHost).Assembly) {}
+      : base("DefaultApp Console", typeof(MyServices).Assembly, typeof(AppHost).Assembly)
 }
 ```
 
@@ -415,7 +415,7 @@ public class NativeHostService : Service
             throw HttpError.NotFound("Function Not Found");
 
         var nativeHost = typeof(NativeHost).CreateInstance<NativeHost>();
-        var methodName = request.Action.Substring(0, 1).ToUpper() + request.Action.Substring(1);
+        var methodName = request.Action.Substring(0,1).ToUpper()+request.Action.Substring(1);
         var methodInfo = typeof(NativeHost).GetMethod(methodName);
         if (methodInfo == null)
             throw new HttpError(HttpStatusCode.NotFound, "Function Not Found");
@@ -463,7 +463,8 @@ public class NativeHost
 
     public void ShowAbout()
     {
-        MessageBox.Show(@"ServiceStack with CefSharp + ReactJS", @"DefaultApp.AppWinForms", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show(@"ServiceStack with CefSharp + ReactJS", 
+            @"DefaultApp.AppWinForms", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     public void ToggleFormBorder()
@@ -632,9 +633,9 @@ public partial class MainWindow : MonoMac.AppKit.NSWindow
         base.AwakeFromNib ();
         Program.MainMenu = NSApplication.SharedApplication.MainMenu;
         webView.MainFrameUrl = Program.HostUrl;
-        webView.Frame = new System.Drawing.RectangleF(0,0,this.Frame.Width,this.Frame.Height);
+        webView.Frame = new RectangleF(0,0,this.Frame.Width,this.Frame.Height);
         this.DidResize += (sender, e) =>  {
-            webView.Frame = new System.Drawing.RectangleF(0,0,this.Frame.Width,this.Frame.Height);
+            webView.Frame = new RectangleF(0,0,this.Frame.Width,this.Frame.Height);
         };
     }
 }
