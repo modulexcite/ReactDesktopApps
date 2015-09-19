@@ -34,7 +34,7 @@ namespace DefaultApp.AppWinForms
             SetConfig(new HostConfig
             {
                 DebugMode = true,
-                EmbeddedResourceBaseTypes = { typeof(AppHost), typeof(CefResources) },
+                EmbeddedResourceBaseTypes = { typeof(AppHost), typeof(SharedEmbeddedResources) },
             });
         }
     }
