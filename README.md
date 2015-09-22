@@ -13,7 +13,7 @@ The new **React Desktop Apps** template in
 [ServiceStackVS](https://visualstudiogallery.msdn.microsoft.com/5bd40817-0986-444d-a77d-482e43a48da7) 
 provides everything you need to package your ASP.NET ServiceStack Web App into a native Windows Winforms App, 
 OSX Cocoa Desktop App or cross-platform (Windows/OSX/Linux) "headless" Console App which instead of being 
-embedded inside a Native UI, launches the Users prefered Web Browser for its Web UI.
+embedded inside a Native UI, launches the User's prefered Web Browser for its Web UI.
 
 This Hybrid model of developing Desktop Apps with modern WebKit technologies offers a more productive and 
 reusable alternative to developing bespoke WPF Apps in XAML or Cocoa OSX Apps with Xcode. 
@@ -55,7 +55,7 @@ Grunt tasks.
 
 ### DefaultApp.sln 
 
-- **DefaultApp** - Complete Web applicaton, inc. all Web App's .js, .css, images, etc.
+- **DefaultApp** - Complete Web application, inc. all Web App's .js, .css, images, etc.
 - **DefaultApp.AppConsole** - Console Host Project
 - **DefaultApp.AppWinForms** - WinForms Host Project
 - **DefaultApp.Resources** - Shared Embedded resources sourced from **DefaultApp** 
@@ -110,7 +110,7 @@ Download for the Default Template Winforms App:
 To package the OSX App you'll need to open the **DefaultAppMac.sln** in Xamarin.Studio on OSX which packages
 the App as on OSX App or Installer. 
 
-Download for the Default Template OSX Cooca App: 
+Download for the Default Template OSX Cocoa App: 
 
 #### [DefaultApp.AppMac.app.zip](https://github.com/ServiceStackApps/ReactDesktopApps/raw/master/dist/DefaultApp.AppMac.app.zip) (4.1 MB)
 
@@ -166,7 +166,7 @@ React Web Application without any consideration for the different platforms the 
 
 The template follows the same
 [Modern React Apps with .NET](https://github.com/ServiceStackApps/Chat-React#modern-reactjs-apps-with-net)
-as ServiceStack's other Single Page App templates which uses node's rich ecosytem to enable access to premier
+as ServiceStack's other Single Page App templates which uses node's rich ecosystem to enable access to premier
 Web technologies including [bower](http://bower.io/) for client dependencies and pre-configured
 [Grunt](http://gruntjs.com) and [Gulp](http://gulpjs.com) tasks to take care of website bundling, optimization,
 application packaging and ASP.NET Website deployemnts.
@@ -174,7 +174,7 @@ application packaging and ASP.NET Website deployemnts.
 The entire React application is hosted within a single static 
 [default.html](https://github.com/ServiceStackApps/ReactDesktopApps/blob/master/src/DefaultApp/DefaultApp/DefaultApp/default.html)
 which is itself only used to structure the websites resources into logical groupings where 3rd Party 
-JavaScript libraries and CSS are kept isolated from your Applications source code. The groups are defined
+JavaScript libraries and CSS are kept isolated from your Application's source code. The groups are defined
 by HTML comments which instruct 
 [Gulps userref](https://www.npmjs.com/package/gulp-useref) plugin on how to minify and optimize your 
 Apps resources:
@@ -307,10 +307,10 @@ Website inside different applications. The React App itself is encapsulated with
 ### Platform-specific customizations 
 
 Customizations for each platform is available by modifying the `platform.css` and `project.js` files at the 
-base of each projects folder. 
+base of each project's folder. 
 
 In addition, an easy way to limit which HTML elements are displayed is to use the `platform` class to initially 
-hide the element, then specify which platforms it should be displayed in by listing the specific plaforms, e.g:
+hide the element, then specify which platforms it should be displayed in by listing the specific platforms, e.g:
 
 ```html
 <ul className="nav navbar-nav pull-right">
@@ -623,7 +623,7 @@ public static class Program
 
 As-is standard for Cocoa Apps, the UI for each Window is contained in `.xib` files that are created and designed
 using Interface Builder. In the `AwakeFromNib()` callback we fully dock the `WebView` to the `MainWindow` and 
-set its `MainFrameUrl` to naviate to the Applications Url to render the React Web UI:
+set its `MainFrameUrl` to navigate to the Applications Url to render the React Web UI:
 
 ```csharp
 public partial class MainWindow : MonoMac.AppKit.NSWindow
@@ -644,7 +644,7 @@ public partial class MainWindow : MonoMac.AppKit.NSWindow
 ## Grunt Tasks
 
 Grunt and Gulp are used in the DefaultApp project to automate the bundling, packaging and deployment of the 
-applications. These tasks are declared as small, composable Grunt tasks that are then orchastrated 
+applications. These tasks are declared as small, composable Grunt tasks that are then orchestrated 
 by the high-level Alias tasks which are easily run within Visual Studio using **Task Runner Explorer** or
 from the command-line with the `grunt` script.
 
@@ -670,7 +670,7 @@ references. This enables simple use of debug JS files whilst still having contro
 ```
 
 When creating new JS files for your application, they should be added in the `build:js /js/app.min.js` or
-`build:js js/app.jsx.js` HTMLcomments shown above.
+`build:js js/app.jsx.js` HTML comments shown above.
 
 Should you need to extend the Grunt task to copy additional resources you can specify additional them in
 the `COPY_FILES` rules at the top of 
@@ -806,7 +806,7 @@ GUIMode="2"
 Configuration options for 7z SFX can be found in the 
 [7z SFX documentation](http://7zsfx.info/en/configinfo.html).
 
-The DefaultAppApp solution is using a modified version of the 7zsd_All.sfx file which generates the 
+The Default App solution is using a modified version of the 7zsd_All.sfx file which generates the 
 self executable with the custom ServiceStack `.ico` file. More information on how to change this to a custom 
 icon can be found on the [7zsfx.info](http://7zsfx.info/en/icon.html) site.
 
