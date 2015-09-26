@@ -44,17 +44,17 @@ allowing for a simplified and iterative dev workflow by running the preferred Ho
 
 ## Downloads
 
-Windows Winforms App:
+#### Windows Winforms App
 
-#### [DefaultApp-winforms.exe](https://github.com/ServiceStackApps/ReactDesktopApps/raw/master/dist/DefaultApp-winforms.exe) (23.7 MB)
+[DefaultApp-winforms.exe](https://github.com/ServiceStackApps/ReactDesktopApps/raw/master/dist/DefaultApp-winforms.exe) (23.7 MB)
 
-OSX Cocoa App: 
+#### OSX Cocoa App
 
-#### [DefaultApp.AppMac.app.zip](https://github.com/ServiceStackApps/ReactDesktopApps/raw/master/dist/DefaultApp.AppMac.app.zip) (4.1 MB)
+[DefaultApp.AppMac.app.zip](https://github.com/ServiceStackApps/ReactDesktopApps/raw/master/dist/DefaultApp.AppMac.app.zip) (4.1 MB)
 
-Console App (Windows/OSX/Linux):
+#### Console App (Windows/OSX/Linux)
 
-#### [DefaultApp-console.exe](https://github.com/ServiceStackApps/ReactDesktopApps/raw/master/dist/DefaultApp-console.exe) (4.8 MB) or [DefaultApp-console.zip](https://github.com/ServiceStackApps/ReactDesktopApps/raw/master/dist/DefaultApp-console.zip) (1.5 MB)
+[DefaultApp-console.exe](https://github.com/ServiceStackApps/ReactDesktopApps/raw/master/dist/DefaultApp-console.exe) (4.8 MB) or [DefaultApp-console.zip](https://github.com/ServiceStackApps/ReactDesktopApps/raw/master/dist/DefaultApp-console.zip) (1.5 MB)
 
 ## Project Structure
 
