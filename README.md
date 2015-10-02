@@ -853,7 +853,7 @@ application. For more information on use web-deploy using either Grunt or just V
 
 For more info on working with React, see the 
 [Intro to React docs](https://github.com/ServiceStackApps/Chat-React#introducing-reactjs) on the Chat-React project. 
-# Example React Desktop Apps
+# Example Apps
 
 ## [Redis React](https://github.com/ServiceStackApps/RedisReact)
 
